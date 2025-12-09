@@ -57,7 +57,7 @@ def recibir_json(cliente, usuario, pilas_versiones):
         )
 
         os.rename(ruta_actual, ruta_version)
-        pila.push(ruta_version)
+        pila.apilar(ruta_version)
 
 
     with open(ruta_actual, "w", encoding="utf-8") as f:
