@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+from servidor import pila_versiones
 
 
 # NOTA: Script de funciones creadas como requisito de la entrega 3 del trabajo final
@@ -30,6 +31,9 @@ def marcatiempos():
 # -- Modificación de la función recibir_json en herramientas_servidor.py para que cumpla los requisitos de la entrega 3
 
 def recibir_json(cliente, usuario, pilas_versiones):
+
+    global pila_versiones
+    
     # Primero nos aseguramos que existe la pila del usuario
     if usuario not in pilas_versiones:
         pilas_versiones[usuario] = Pila()

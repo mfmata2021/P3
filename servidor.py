@@ -2,8 +2,11 @@ import socket
 import threading
 import pickle
 from herramientas_servidor import *
+from requisitos_servidor import *
 import sys
 
+#Biblioteca vacía para ir guardando los usuarios y su pila
+pila_versiones = {} #esto tendrá la forma { "Usuario" : Pila()}
 
 # Biblioteca que contendrá a los {"usuario" : usuario_socket} que se conecten al servidor y que no pueden ser usuados por nuevos clientes s
 usuarios_activos = []
@@ -21,6 +24,7 @@ servidor.listen()
 def comunicacion (cliente, addr):
 
     global usuarios_activos
+    global pila_versiones
     usuario = None
 
     if cliente:
@@ -86,7 +90,12 @@ def comunicacion (cliente, addr):
                         enviar_mp3(cliente, usuario)
 
                     elif comando[0] == "SUBIR" and usuario:
-                        recibir_json(cliente, usuario)
+                        try:
+                            lock.acquire()
+                            recibir_json(cliente, usuario, pila_versiones)
+                        finally:
+                            lock.release()
+
                         recibir_mp3(cliente, usuario)
 
                     elif comando[0] == "SALIR":
